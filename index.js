@@ -1,12 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+const bodyParser = require("body-parser");
 const apiRouter = express.Router();
 require("./db/db")();
+
 const morgan = require("morgan");
 const handleErrors = require("./middlewears/error-handler.js");
 const { Crud } = require("./models/crud-data");
 const Joi = require("joi");
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
 
 function validateCrud(crud) {
   const schema = Joi.object({
@@ -33,7 +36,7 @@ apiRouter.get("", (req, res) => {
 
 apiRouter.post("/add-data", async (req, res, next) => {
   const validation = await validateCrud(req.body);
-
+  console.log(req.body);
   const crudData = validation.value;
   if (!validation.error) {
     const crud = new Crud(crudData);

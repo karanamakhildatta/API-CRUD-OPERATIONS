@@ -61,7 +61,8 @@ apiRouter.put("/add-data/:id", async (req, res, next) => {
   if (!validation.error) {
     user = Object.assign(crud, req.body);
     crud.save();
-    res.json(crud);
+    res.status(200);
+    return res.json(crud);
   }
   res.status(400);
   const error = new Error(result.error.details[0].message);
